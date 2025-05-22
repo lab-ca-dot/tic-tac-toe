@@ -1,0 +1,124 @@
+.wrapper {
+  text-align: center;
+  padding: 20px;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 80px);
+  grid-template-rows: repeat(3, 80px);
+  gap: 10px;
+  justify-content: center;
+  margin: 20px auto;
+}
+
+.cell {
+  font-size: 2rem;
+  background: #f0f0f0;
+  border: 2px solid #ccc;
+  color: #000;
+  cursor: pointer;
+  transition: background 0.2s;
+  &:hover {
+    background: #ddd;
+  }
+
+  &.circle {
+    color: #0070f3; // 青系（〇）
+  }
+
+  &.cross {
+    color: #e00; // 赤系（×）
+  }
+}
+
+.reset {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+}
+
+
+.startScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  max-width: 400px;
+  margin: 3rem auto;
+  background: #f8f8f8;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    font-size: 1.25rem;
+    color: #333;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    background: #fff;
+    color: #333;
+    border-radius: 6px;
+  }
+
+  button {
+    margin-top: 1rem;
+    padding: 0.6rem 1.5rem;
+    font-size: 1rem;
+    background: #0070f3;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: #005bb5;
+    }
+
+    &:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.turnDisplay {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 1.5rem 0;
+  color: yellow;
+}
+
+// TicTacToe.module.scss に追加しておくと見栄え改善できます
+.nameInputBox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+
+  input {
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
+
+  button {
+    padding: 0.5rem;
+    font-weight: bold;
+    background: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background: #555;
+    }
+  }
+}
