@@ -97,6 +97,31 @@
   color: yellow;
 }
 
+.myTurn {
+  color: rgb(211, 72, 72); // お好きな色でOK（青など）
+  font-weight: bold;
+}
+
+.playerRole {
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 10px;
+
+  strong {
+    font-size: 18px;
+    //color: #555;
+  }
+    &.circle {
+    color: #0070f3; // 青系（〇）
+  }
+
+  &.cross {
+    color: #e00; // 赤系（×）
+  }
+
+}
+
+
 // TicTacToe.module.scss に追加しておくと見栄え改善できます
 .nameInputBox {
   display: flex;

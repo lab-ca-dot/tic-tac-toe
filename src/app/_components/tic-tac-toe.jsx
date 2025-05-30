@@ -20,6 +20,9 @@ export default function TicTacToe() {
   const [currentPlayer, setCurrentPlayer] = useState('〇'); // 現在のプレイヤー（〇 or ×）
   const [winner, setWinner] = useState(null); // 勝者が決まったときに使う
 
+  // 満員かどうか
+  const [isFull, setIsFull] = useState(false);
+
   // 通信イベントの設定
   useEffect(() => {
     if (!name) return;
@@ -34,6 +37,12 @@ export default function TicTacToe() {
     channel.bind('join', ({ player1, player2 }) => {
       console.log('[JOIN] 自分:', name);
       console.log('[JOIN] 受信したプレイヤー:', player1?.name, player2?.name);
+
+      // どちらにも自分の名前がなければ → 満員と判断
+      if (player1?.name !== name && player2?.name !== name) {
+        setIsFull(true);
+        return;
+      }
 
       // 自分が player1 か player2 かを判断
       if (player1?.name === name) {
@@ -82,7 +91,9 @@ export default function TicTacToe() {
 
   // プレイヤーが参加ボタンを押したときの処理
   const handleJoin = async () => {
-    if (!name) return;
+
+    //名前がない、もしくは満員なら何も返さない
+    if (!name || isFull) return;
 
     setIsWaiting(true); // ローディング状態を表示したければ
 
@@ -99,7 +110,7 @@ export default function TicTacToe() {
     });
 
     // 名前をuseStateに反映（useEffectでnameが依存になるため）
-    setName(name);
+    //setName(name);
 
     // 10秒以内にjoinイベントを受け取ればゲームが始まる
     setTimeout(() => {
@@ -205,7 +216,9 @@ export default function TicTacToe() {
   // ゲーム未開始時の画面
   if (!isGameStarted) {
     let waitingContent;
-    if (isWaiting) {
+    if (isFull ) {
+      waitingContent = <h2>ほかの人がプレイ中です。しばらくお待ちください。...</h2>;
+    } else if (isWaiting) {
       waitingContent = <h2>相手が参加するのを待っています...</h2>;
     } else {
       waitingContent = (
@@ -232,12 +245,14 @@ export default function TicTacToe() {
   // ゲーム画面
   return (
     <div className={styles.wrapper}>
-      <h2 className={styles.turnDisplay}>
+      <h2 className={`${styles.turnDisplay} ${
+        currentPlayer === playerSymbol ? styles.myTurn : ''
+      }`}>
           {winner
             ? winner === '引き分け'
               ? '引き分け！'
-              : `${winner === playerSymbol ? name : opponentName || '???'}の勝ち！`
-            : `次の手: ${currentPlayer === playerSymbol ? name : opponentName || '???'}`}
+              : `あなたの${winner === playerSymbol ? '勝ち!!' : "負け..." || '???'}`
+            : `次の手: ${currentPlayer === playerSymbol ? name : opponentName || '???'}さん`}
       </h2>
 
       <div className={styles.board}>
@@ -256,7 +271,11 @@ export default function TicTacToe() {
           ))
         )}
       </div>
-
+      <p className={styles.playerRole}>
+        {name}さんは<strong className={`${
+                playerSymbol === '〇' ? styles.circle : playerSymbol === '×' ? styles.cross : ''
+              }`}>{playerSymbol}</strong>です
+      </p>
       <button onClick={handleReset} className={styles.reset}>
         リセット
       </button>
